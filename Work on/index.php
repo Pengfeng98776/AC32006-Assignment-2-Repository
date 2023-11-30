@@ -8,8 +8,14 @@
     include 'includes/db.php'; // includes a connection to the database
     include 'includes/navbar.php'; // includes the nav bar
     include 'includes/searchBar.php'; // includes the search bar
+
+    // SELECTS ALL PRODUCTS
+    $query = "SELECT * FROM Product";
+    $stmt = $mysql->prepare($query);
+    $stmt->execute();
     ?>
     
+
     <div class="container-fluid tm-container-content tm-mt-60">
         <div class="row mb-4">
             <h2 class="col-6 tm-text-primary">
@@ -21,7 +27,8 @@
                 </form>
             </div>
         </div>
-        <!--Link Database here-->
+        <!--Gets the next product in the database with fetch-->
+        <?php $result = $stmt->fetch(); ?>
         <div class="row tm-mb-90 tm-gallery">
         	<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
@@ -29,22 +36,23 @@
                     <img src="img/placeholder.png" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
                         <!--Link item name in database -->
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
                  <!--Blank for more information -->
                 <div class="d-flex justify-content-between tm-text-gray">
-                    <span class="tm-text-gray-light">Time blank</span>
-                    <span>blank</span>
+                    <span class="tm-text-gray-light">£<?php echo $result['PurchaseCost'] ?></span>
+                    <span><?php echo $result['Description'] ?></span>
                 </div>
             </div>
-            <!--Same below-->
+            <!--Gets the next row in the database-->
+            <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
                     <img src="img/placeholder.png" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
@@ -146,6 +154,44 @@
             </div>            
         </div>
     </div> <!-- container-fluid, tm-container-content -->
+
+    <h2>Add new Item</h2>
+    <form name="Add New Product" action="addProduct.php" method="post">
+                <p></p> <!-- spacing smile -->
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Product name:</label>
+                  <input type="text" class="form-control" name="productName" placeholder="Name">
+                </div>
+                <p></p> <!-- spacing smile -->
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Product Description:</label>
+                  <textarea class="form-control" name="description" rows="3"></textarea>
+                </div>
+                <p></p> <!-- spacing smile -->
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Price:</label>
+                  <input type="text" class="form-control" name="price" placeholder="price">
+                </div>
+                <p></p> <!-- spacing smile -->
+                <div class="form-group">
+                  <label for="formGroupExampleInput">SupplierID:</label>
+                  <input type="text" class="form-control" name="supplierID" placeholder="supplier id">
+                </div>
+                <p></p> <!-- spacing smile -->
+                <div class="form-group">
+                  <label for="formGroupExampleInput">CategoryID:</label>
+                  <input type="text" class="form-control" name="categoryID" placeholder="category id">
+                </div>
+                <p></p> <!-- spacing smile -->
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Current quantity:</label>
+                  <input type="text" class="form-control" name="quantity" placeholder="quantity">
+                </div>
+                <input type="submit" name="submit" value="submit">
+    </form>
+
+
 
     <?php 
     include 'includes/footer.php'; // includes the footer 
