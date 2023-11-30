@@ -46,7 +46,7 @@
                     <span><?php echo $result['Description'] ?></span>
                 </div>
             </div>
-            <!--Gets the next row in the database-->
+            <!--Same below-->
             <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
@@ -57,15 +57,16 @@
                     </figcaption>                    
                 </figure>
                 <div class="d-flex justify-content-between tm-text-gray">
-                    <span class="tm-text-gray-light">14 Oct 2020</span>
-                    <span>16,100 views</span>
+                    <span class="tm-text-gray-light">£<?php echo $result['PurchaseCost'] ?></span>
+                    <span><?php echo $result['Description'] ?></span>
                 </div>
             </div>
+            <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
                     <img src="img/img-05.jpg" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
@@ -74,11 +75,12 @@
                     <span>12,460 views</span>
                 </div>
             </div>
+            <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
                     <img src="img/img-06.jpg" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
@@ -87,12 +89,12 @@
                     <span>11,402 views</span>
                 </div>
             </div>
-            
+            <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
                     <img src="img/img-01.jpg" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
@@ -101,11 +103,12 @@
                     <span>16,008 views</span>
                 </div>
             </div>
+            <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
                     <img src="img/img-02.jpg" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
@@ -114,11 +117,12 @@
                     <span>12,860 views</span>
                 </div>
             </div>
+            <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
                     <img src="img/img-07.jpg" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
@@ -127,11 +131,12 @@
                     <span>10,900 views</span>
                 </div>
             </div>
+            <?php $result = $stmt->fetch(); ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure class="effect-ming tm-video-item">
                     <img src="img/img-08.jpg" alt="Image" class="img-fluid">
                     <figcaption class="d-flex align-items-center justify-content-center">
-                        <h2>Name blank</h2>
+                        <h2><?php echo $result['Name'] ?></h2>
                         <a href="detail.php">View more</a>
                     </figcaption>                    
                 </figure>
@@ -160,7 +165,7 @@
                 <p></p> <!-- spacing smile -->
                 <div class="form-group">
                   <label for="formGroupExampleInput">Product name:</label>
-                  <input type="text" class="form-control" name="productName" placeholder="Name">
+                  <input type="text" class="form-control" name="name" placeholder="Name">
                 </div>
                 <p></p> <!-- spacing smile -->
                 </div>
@@ -170,23 +175,18 @@
                 </div>
                 <p></p> <!-- spacing smile -->
                 <div class="form-group">
-                  <label for="formGroupExampleInput">Price:</label>
-                  <input type="text" class="form-control" name="price" placeholder="price">
+                  <label for="formGroupExampleInput">Purchase Cost:</label>
+                  <input type="text" class="form-control" name="purchaseCost" placeholder="price">
                 </div>
                 <p></p> <!-- spacing smile -->
                 <div class="form-group">
-                  <label for="formGroupExampleInput">SupplierID:</label>
-                  <input type="text" class="form-control" name="supplierID" placeholder="supplier id">
-                </div>
-                <p></p> <!-- spacing smile -->
-                <div class="form-group">
-                  <label for="formGroupExampleInput">CategoryID:</label>
-                  <input type="text" class="form-control" name="categoryID" placeholder="category id">
+                  <label for="formGroupExampleInput">Selling Price:</label>
+                  <input type="text" class="form-control" name="sellingPrice" placeholder="supplier id">
                 </div>
                 <p></p> <!-- spacing smile -->
                 <div class="form-group">
                   <label for="formGroupExampleInput">Current quantity:</label>
-                  <input type="text" class="form-control" name="quantity" placeholder="quantity">
+                  <input type="text" class="form-control" name="stockQuantity" placeholder="quantity">
                 </div>
                 <input type="submit" name="submit" value="submit">
     </form>
