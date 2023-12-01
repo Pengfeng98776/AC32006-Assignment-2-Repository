@@ -17,8 +17,10 @@
 
         <div class="col-sm-10">
           <div id="products" class="row mt-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4"> <!-- cards generated from query & js magic goes here, currently hardcoded examples -->
-
-          <?php $result = $stmt->fetch(); ?>
+          <?php
+          $maxResultsPerPage = 8;
+          $result = $stmt->fetch();
+          for ($i = 1; $i <= $maxResultsPerPage && $result != NULL; $i++) { ?>
             <div class="col mt-2">
               <div class="card">
                 <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image">

@@ -61,6 +61,7 @@ body{
 }
 
 /* Ensure the text doesn't overflow */
+/* This has been taken from https://bootsnipp.com/snippets/ORE0l to allow multiple lines before truncating*/
 .crop-text-2 {
   overflow: hidden;
   text-overflow: ellipsis;
