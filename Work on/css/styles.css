@@ -5,7 +5,6 @@ body{
 
 /* we then use a slightly lighter gray as the colour for the card, then text will always be white :) */
 
-/* Custom styles for the hero section */
 .cover {
   position: relative;
   text-align: center;
@@ -23,9 +22,25 @@ body{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-  padding: 20px;
-  border-radius: 8px;
+/* after sleeping on it i'm unsure whether I like it with or without the background
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 20px;
+*/
+}
+
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* this section below is just chatgpt to quickly style the card, will not be like this later <3 */
