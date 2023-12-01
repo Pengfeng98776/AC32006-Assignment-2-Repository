@@ -1,0 +1,55 @@
+body{
+  background-color: #18191A;
+  color: #ffffff
+}
+
+/* we then use a slightly lighter gray as the colour for the card, then text will always be white :) */
+
+/* Custom styles for the hero section */
+.cover {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.cover img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.cover-caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* this section below is just chatgpt to quickly style the card, will not be like this later <3 */
+
+/* Styles for the featured products section */
+.featured-products .card {
+  background: #333; /* Dark card background */
+  color: #fff; /* Light text for readability */
+}
+
+.featured-products .card .btn-outline-success {
+  border-color: #28a745;
+}
+
+.featured-products .card .btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Ensure the text doesn't overflow */
+.crop-text-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+}
