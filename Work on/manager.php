@@ -6,47 +6,81 @@
   <?php
   include 'includes/db.php';
   include 'includes/navbar.php';
-  // SELECTS ALL PRODUCTS
-  $query = "SELECT * FROM Product";
-  $stmt = $mysql->prepare($query);
-  $stmt->execute(); 
+  include 'includes/productPageNav.php';
   ?>
     <div class="container-fluid">
       <div class="row">
-
-        <div class="col-sm-10">
-          <div id="products" class="row mt-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4"> <!-- cards generated from query & js magic goes here, currently hardcoded examples -->
-          <?php
-          $maxResultsPerPage = 8;
-          $result = $stmt->fetch();
-          for ($i = 1; $i <= $maxResultsPerPage && $result != NULL; $i++) { ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
+        <div class="col-xl-10">
+          <div class="row mt-2">
+            <div class="col-6 align-items-center">
+              <h5>
+                  Products we have
+              </h5>
+            </div>
+            <div class="col-6 d-flex justify-content-end align-items-center">
+              <form action="<?php echo "{$_SERVER['PHP_SELF']}";?>" class="form-check">
+                  Page <input type="text" value="<?php echo $currentPage;?>" size="1"> of <?php echo $numOfPages;?>
+              </form>
+            </div>
+          </div>
+          <div id="products" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
+            <?php
+            // Generate Cards
+            while ($result != NULL) { ?>
+              <div class="col mt-2">
+                <div class="card bg-dark text-white">
+                  <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-8">
+                        <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
+                      </div>
+                      <div class="col-4">
+                        <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
+                      </div>
                     </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
+                    <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
+                    <div class="row">
+                      <div class="btn-group" data-toggle="buttons">
+                        <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
+                        <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
+                      </div>
                     </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
                   </div>
                 </div>
               </div>
-            </div>
-            <?php 
-          $result = $stmt->fetch();
-          } ?>
+              <?php 
+            $result = $stmt->fetch();
+            } ?>
           </div>
-        </div>
+          
+          <!-- navigation for prouct pages -->
+          <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center my-1">
+                <a href="<?php echo "{$_SERVER['PHP_SELF']}?currentPage="; echo $currentPage-1;?>" class="btn btn-outline-success <?php if ($currentPage==0) {echo "disabled";}?>"><span class = "d-none d-sm-block">Previous</span> <span class = "d-block d-sm-none">&laquo;</span></a>
+                <div class="d-flex justify-content-center">
+                    <?php 
+                    $printedCurrent = False;
+                    $numOfPages = 20;
+                    $numOfButtons=9;
+                    for ($i=1; $i<$numOfButtons+1; $i++) {
+                      if (($numOfPages-$currentPage+$i < $numOfButtons )){
+                        echo "<a href=\"{$_SERVER['PHP_SELF']}?currentPage=", $numOfPages-($numOfButtons-$i) ,"\" class=\"me-1 btn btn-outline-success\">", $numOfPages-($numOfButtons-$i), "</a>";
+                      } else if ($printedCurrent != True){
+                        echo "<a href=\"{$_SERVER['PHP_SELF']}?currentPage=", $currentPage ,"\" class=\"me-1 btn btn-outline-success active\">", $currentPage, "</a>";
+                        $printedCurrent = True;
+                      } else if ($numOfPages>$numOfPages-$currentPage+$i) {
+                        echo "<a href=\"{$_SERVER['PHP_SELF']}?currentPage=", $numOfPages-($numOfButtons-$i) ,"\" class=\"me-1 btn btn-outline-success\">", $numOfPages-($numOfButtons-$i), "</a>";
+                      }
+                    } 
+                    ?>
+                </div>
+                <a href="<?php echo "{$_SERVER['PHP_SELF']}?currentPage="; echo $currentPage+1;?>" class="btn btn-outline-success <?php if ($currentPage==$numOfPages) {echo "disabled";}?>"><span class = "d-none d-sm-block">Next Page</span> <span class = "d-block d-sm-none">&raquo;</span></a>
+              </div>            
+            </div>
+          </div>
 
-        <div class="col-lg-2 d-none d-xl-block border mt-4"> <!-- Additional column for shopping cart -->
+        <div class="col-lg-2 d-none d-xl-block border mt-2"> <!-- Additional column for shopping cart -->
           <div class="row mt-2">
             <div class="col">
               <h3><i class="fa-solid fa-cart-shopping"></i>Add new product:</h3>
