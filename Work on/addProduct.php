@@ -1,4 +1,5 @@
 <?php
+header('Location: /test/manager.php');
 include 'includes/db.php';
 
 if (isset($_POST['submit'])) {
