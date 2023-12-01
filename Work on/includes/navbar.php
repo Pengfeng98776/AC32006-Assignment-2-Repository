@@ -12,9 +12,9 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="customer.php">Customer View</a></li>
-              <li><a class="dropdown-item" href="staff.php">Staff View</a></li>
-              <li><a class="dropdown-item" href="manager.php">Manager View</a></li>
-              <li><a class="dropdown-item" href="maintenance.php">Maintenance View</a></li>
+              <li><a class="dropdown-item" href="login.php">Staff View</a></li>
+              <li><a class="dropdown-item" href="login.php">Manager View</a></li>
+              <li><a class="dropdown-item" href="login.php">Maintenance View</a></li>
             </ul>
           </li>
         </ul>
