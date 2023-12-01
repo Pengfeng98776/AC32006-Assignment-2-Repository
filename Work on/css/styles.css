@@ -43,6 +43,15 @@ body{
   text-overflow: ellipsis;
 }
 
+.card{
+  background-color: #333333;
+  color: white;
+}
+
+.card-body{
+  background-color: #333333;
+}
+
 /* this section below is just chatgpt to quickly style the card, will not be like this later <3 */
 
 /* Styles for the featured products section */
@@ -61,7 +70,6 @@ body{
 }
 
 /* Ensure the text doesn't overflow */
-/* This has been taken from https://bootsnipp.com/snippets/ORE0l to allow multiple lines before truncating*/
 .crop-text-2 {
   overflow: hidden;
   text-overflow: ellipsis;
