@@ -17,9 +17,10 @@
 
         <div class="col-sm-10">
           <div id="products" class="row mt-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4"> <!-- cards generated from query & js magic goes here, currently hardcoded examples -->
-
-          <?php $result = $stmt->fetch(); ?>
-          <?php if($result != NULL): ?>
+          <?php
+          $maxResultsPerPage = 8;
+          $result = $stmt->fetch();
+          for ($i = 1; $i <= $maxResultsPerPage && $result != NULL; $i++) { ?>
             <div class="col mt-2">
               <div class="card">
                 <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image">
@@ -40,175 +41,9 @@
                 </div>
               </div>
             </div>
-            <?php endif; ?>
-
-            <?php $result = $stmt->fetch(); ?>
-            <?php if($result != NULL): ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder sold out.jpg" alt="A placeholder image" >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                    <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
-                    </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
-                    </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <?php endif; ?>
-
-            <?php $result = $stmt->fetch(); ?>
-            <?php if($result != NULL): ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image" >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                    <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
-                    </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
-                    </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <?php endif; ?>
-
-            <?php $result = $stmt->fetch(); ?>
-            <?php if($result != NULL): ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image" >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                    <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
-                    </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
-                    </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <?php endif; ?>
-
-            <?php $result = $stmt->fetch(); ?>
-            <?php if($result != NULL): ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder sold out.jpg" alt="A placeholder image" >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                    <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
-                    </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
-                    </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <?php endif; ?>
-
-            <?php $result = $stmt->fetch(); ?>
-            <?php if($result != NULL): ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image" >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                    <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
-                    </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
-                    </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <?php endif; ?>
-
-            <?php $result = $stmt->fetch(); ?>
-            <?php if($result != NULL): ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image" >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                    <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
-                    </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
-                    </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <?php endif; ?>
-
-            <?php $result = $stmt->fetch(); ?>
-            <?php if($result != NULL): ?>
-            <div class="col mt-2">
-              <div class="card">
-                <img class="card-img-top" src="images/product placeholders/product placeholder sold out.jpg" alt="A placeholder image" >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-8">
-                    <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
-                    </div>
-                    <div class="col-4">
-                      <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
-                    </div>
-                  </div>
-                  <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
-                  <div class="row">
-                    <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
-                    <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <?php endif; ?>
+          <?php 
+          $result = $stmt->fetch();
+          } ?>
           </div>
         </div>
 
