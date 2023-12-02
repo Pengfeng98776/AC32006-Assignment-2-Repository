@@ -1,10 +1,66 @@
+<?php
+include 'includes/db.php';
+include 'includes/navbar.php';
+
+/*
+// Temporary script to insert initial user logins
+function insertInitialUsers($mysql) {
+    $users = [
+        ['username' => 'managerUser1', 'password' => 'managerPass1', 'usertype' => 'Manager View'],
+        ['username' => 'staffUser1', 'password' => 'staffPass1', 'usertype' => 'Staff View'],
+        ['username' => 'maintenanceUser1', 'password' => 'maintenancePass1', 'usertype' => 'Maintenance View'],
+    ];
+
+    foreach ($users as $user) {
+        $hashedPassword = password_hash($user['password'], PASSWORD_DEFAULT);
+        $stmt = $mysql->prepare("INSERT INTO UserAccount (username, password_hash, usertype) VALUES (:username, :password_hash, :usertype)");
+        $stmt->execute([
+            ':username' => $user['username'],
+            ':password_hash' => $hashedPassword,
+            ':usertype' => $user['usertype']
+        ]);
+    }
+}
+*/
+
+$errorMessage = "";
+
+if (isset($_POST['submit'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $stmt = $mysql->prepare("SELECT usertype, password_hash FROM UserAccount WHERE username = :username");
+    $stmt->execute([':username' => $username]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password_hash'])) {
+        session_start();
+        $_SESSION['username'] = $username;
+        $_SESSION['role'] = $user['usertype'];
+
+        switch ($user['usertype']) {
+            case 'Manager View':
+                header('Location: manager.php');
+                break;
+            case 'Staff View':
+                header('Location: staff.php');
+                break;
+            case 'Maintenance View':
+                header('Location: maintenance.php');
+                break;
+        }
+        exit;
+    } else {
+        $errorMessage = "Invalid username or password, please try again.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <!-- include head for page -->
+<head>
   <?php include 'includes/head.php'; ?>
 
-
-  <!-- style included in here as to not complicate the master css file because this stuff is only used in here :)) -->
   <style>
     .centered-form-container {
       display: flex;
@@ -24,57 +80,25 @@
     }
   </style>
 
+</head>
 <body>
-  <?php
-  include 'includes/navbar.php';
-  include 'includes/db.php';
-  $errorMessage = "";
-
-  if (isset($_POST['submit'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    $stmt = $mysql->prepare("SELECT role FROM users WHERE username = :username AND password = :password"); // can and will likely change depending on how msc change the table <3
-    $stmt->execute([':username' => $username, ':password' => $password]);
-    $user = $stmt->fetch();
-    // no hashing because well I feel it's not exactly necessary here and is additional complexity for the sake of addtional complexity...
-    // if it were to be implemented I'd use: password_hash(...)
-
-    if ($user) {
-      session_start();
-      $_SESSION['username'] = $username;
-      $_SESSION['role'] = $user['role'];
-
-      switch ($user['role']) {
-        case 'Manager':
-          header('Location: manager.php');
-          break;
-        case 'Staff':
-          header('Location: staff.php');
-          break;
-        case 'Maintenance':
-          header('Location: maintenance.php');
-          break;
-      }
-      exit;
-    } else {
-      $errorMessage = "Invalid username or password, please try again.";
-    }
-  }
-  ?>
-
-  <!-- the error message stuff needs to be confirmed after the tables are made, so yeah -->
   <div class="centered-form-container">
-    <?php if ($errorMessage): ?>
-    <div class="error-message"><?php echo $errorMessage; ?></div>
-    <?php endif; ?>
-
     <form action="login.php" method="post" class="login-form">
-      Username: <input type="text" name="username" class="form-control"><br>
-      Password: <input type="password" name="password" class="form-control"><br>
+      <?php if ($errorMessage): ?>
+        <div class="error-message"><?php echo $errorMessage; ?></div>
+      <?php endif; ?>
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" class="form-control"><br>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" class="form-control"><br>
+      </div>
       <input type="submit" name="submit" value="Login" class="btn btn-success">
     </form>
   </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
