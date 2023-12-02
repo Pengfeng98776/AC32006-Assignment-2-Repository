@@ -50,7 +50,7 @@ function displayProducts(products){
 
         productTitle = document.createElement("h5");
         productTitle.setAttribute('class','card-title');
-        productTitle.innerHTML = products[i].Name;
+        productTitle.innerHTML = products[i].ProductName;
         topLeftCol.appendChild(productTitle);
 
         topRightCol = document.createElement("div");
@@ -68,7 +68,7 @@ function displayProducts(products){
 
         productDescription = document.createElement("p");
         productDescription.setAttribute('class','card-text crop-text-2');
-        productDescription.innerHTML = products[i].Description;
+        productDescription.innerHTML = products[i].ProductCategory;
         midRow.appendChild(productDescription);
 
         bottomRow = document.createElement("div");
