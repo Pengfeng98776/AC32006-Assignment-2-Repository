@@ -1,29 +1,25 @@
 <?php
-include 'db.php';
+header('Location: /test/manager.php');
+include 'includes/db.php';
 
-if ($_POST){
-    $maxResultsPerPage = $_POST['maxResultsPerPage'];
-    $pageNumber= $_POST['pageNumber'];
-    $searchTearms= $_POST['searchTearms'];
-} else { // else exists so i can do a php include on this file to have it actually show me some errors defo a better way :p
-    $maxResultsPerPage = 8;
-    $pageNumber= 1;
-    $searchTearms= null;
+if (isset($_POST['submit'])) {
+    $stmt = $mysql->prepare("INSERT INTO Product (Name, Description, PurchaseCost, SellingPrice, StockQuantity)
+    VALUES (:Name, :Description, :PurchaseCost, :SellingPrice, :StockQuantity)");
+
+    $stmt->bindParam(':Name', $name);
+    $stmt->bindParam(':Description', $description);
+    $stmt->bindParam(':PurchaseCost', $purchaseCost);
+    $stmt->bindParam(':SellingPrice', $sellingPrice);
+    $stmt->bindParam(':StockQuantity', $stockQuantity);
+
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+    $purchaseCost = $_POST['purchaseCost'];
+    $sellingPrice = $_POST['sellingPrice'];
+    $stockQuantity = $_POST['stockQuantity'];
+
+    $stmt->execute();
+} else {
+    //ERROR HANDLING
 }
-
-// Get number of pages
-$query = "SELECT count(*) FROM Product";
-$stmt = $mysql->prepare($query);
-$stmt->execute(); 
-$numOfProducts = $stmt->fetch();
-$numOfPages = ceil($numOfProducts[0] / $maxResultsPerPage);
-
-// Get results for current page
-$offset = ($pageNumber-1) * $maxResultsPerPage;
-$query = "SELECT * FROM Product LIMIT $maxResultsPerPage OFFSET $offset;";
-$stmt = $mysql->prepare($query);
-$stmt->execute(); 
-$results = $stmt->fetchAll();
-
-echo json_encode(array("products"=>$results));   
 ?>
