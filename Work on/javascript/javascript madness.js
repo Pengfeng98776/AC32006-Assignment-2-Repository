@@ -1,3 +1,32 @@
+function updatePageContents(searchTearms){
+    if (!sessionStorage.getItem("currentPage")){
+        currentPage = sessionStorage.setItem("currentPage", 1);
+    } else {
+        currentPage = sessionStorage.getItem("currentPage");
+    }
+    if (currentPage < 1) {
+        currentPage = sessionStorage.setItem("currentPage", 1);
+    }
+    getProducts(currentPage, searchTearms);
+    updatePagination(currentPage);
+    console.log(currentPage);
+}
+
+function updatePageNumber(newPageNumber){
+    sessionStorage.setItem("currentPage", newPageNumber);
+    updatePageContents(null);
+}
+
+function prevPage(){
+    newPageNumber = (currentPage = sessionStorage.getItem("currentPage")) - 1;
+    updatePageNumber(newPageNumber)
+}
+
+function nextPage(){
+    newPageNumber = (currentPage = sessionStorage.getItem("currentPage")) + 1;
+    updatePageNumber(newPageNumber)
+}
+
 function getProducts(pageNumber, searchTearms){
     $.ajax({
         url:"includes/productPageNav.php",    //the page containing php script
@@ -92,4 +121,33 @@ function displayProducts(products){
 
         productContainer.appendChild(div)
     }
+}
+
+function updatePagination(currentPage){
+    console.log("testing pagination")
+    paginationContainer = document.getElementById('pagination'); // Get container to put data into
+    paginationContainer.innerHTML = ""; // Clear container to remove old pagination
+    
+    prevDiv = document.createElement("div");
+    paginationContainer.appendChild(prevDiv);
+
+    prevFullBtn = document.createElement("a");
+    prevFullBtn.innerHTML = "&laquo; Previous"
+    prevFullBtn.setAttribute('onclick','prevPage()');
+    
+    prevSmallBtn = document.createElement("a");
+    prevSmallBtn.innerHTML = "&laquo;"
+    prevSmallBtn.setAttribute('onclick','prevPage()');
+    
+    if (currentPage == 1){
+        prevFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block disabled'); 
+        prevSmallBtn.setAttribute('class','btn btn-outline-success d-block d-sm-none disabled');
+    } else {
+        prevFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block'); 
+        prevSmallBtn.setAttribute('class','btn btn-outline-success d-block d-sm-none');
+    }
+    prevDiv.appendChild(prevFullBtn);
+    prevDiv.appendChild(prevSmallBtn);
+    
+    
 }

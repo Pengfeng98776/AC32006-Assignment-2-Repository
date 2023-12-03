@@ -2,14 +2,18 @@
 <html lang="en" dir="ltr">
 <!-- include head for page -->
 <?php include 'includes/head.php';?>
-<body onload="getProducts(1, null)">
+<body onload="updatePageContents(null)"> <!-- this doesnt work unless here idk why leave me alone. -->
   <?php
   include 'includes/db.php';
   include 'includes/navbar.php';
   ?>
   <div class="container-fluid">
     <div class="row">
+
+      <!-- First column for products -->
       <div class="col-xl-10">
+
+      <!-- Top row -->
         <div class="row mt-2">
           <div class="col-6 align-items-center">
             <h5>
@@ -20,11 +24,22 @@
             <p>temp</p>
           </div>
         </div>
+
+        <!-- Mid row: Containes actuall product listings-->
         <div id="products" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
           <!-- Content is generated using black magic from via jquery ajax & php -->
         </div>
+
+        <!-- Bottom Row: pagination for product pages -->
+        <div class="row">
+          <div class="col-12 d-flex justify-content-between align-items-center my-1" id="pagination">
+              <!-- Content is generated javascript pagination() method-->
+          </div>
+        </div>
       </div>
-      <div class="col-lg-2 d-none d-xl-block border mt-2"> <!-- Additional column for shopping cart -->
+
+      <!-- Additional column for Add product form -->
+      <div class="col-lg-2 d-none d-xl-block border mt-2"> 
         <div class="row mt-2">
           <div class="col">
             <h3><i class="fa-solid fa-cart-shopping"></i>Add new product:</h3>
