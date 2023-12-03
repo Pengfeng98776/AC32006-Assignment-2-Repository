@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <!-- include head for page -->
 <?php include 'includes/head.php';?>
-<body onload="testFunction(1, null)">
+<body onload="getProducts(1, null)">
   <?php
   include 'includes/db.php';
   include 'includes/navbar.php';

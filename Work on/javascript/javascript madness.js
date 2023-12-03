@@ -1,4 +1,4 @@
-function testFunction(pageNumber, searchTearms){
+function getProducts(pageNumber, searchTearms){
     $.ajax({
         url:"includes/productPageNav.php",    //the page containing php script
         type: "post",    //request type,
