@@ -25,5 +25,5 @@ $stmt = $mysql->prepare($query);
 $stmt->execute(); 
 $results = $stmt->fetchAll();
 
-echo json_encode(array("products"=>$results));   
+echo json_encode(array("products"=>$results, "numberOfPages"=>$numOfPages));   
 ?>

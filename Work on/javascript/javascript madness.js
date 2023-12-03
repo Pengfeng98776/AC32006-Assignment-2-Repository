@@ -4,12 +4,8 @@ function updatePageContents(searchTearms){
     } else {
         currentPage = sessionStorage.getItem("currentPage");
     }
-    if (currentPage < 1) {
-        currentPage = sessionStorage.setItem("currentPage", 1);
-    }
     getProducts(currentPage, searchTearms);
-    updatePagination(currentPage);
-    console.log(currentPage);
+    console.log(currentPage)
 }
 
 function updatePageNumber(newPageNumber){
@@ -18,13 +14,15 @@ function updatePageNumber(newPageNumber){
 }
 
 function prevPage(){
-    newPageNumber = (currentPage = sessionStorage.getItem("currentPage")) - 1;
-    updatePageNumber(newPageNumber)
+    console.log("prev");
+    currentPage = parseInt(sessionStorage.getItem("currentPage"))-1;
+    updatePageNumber(currentPage);
 }
 
 function nextPage(){
-    newPageNumber = (currentPage = sessionStorage.getItem("currentPage")) + 1;
-    updatePageNumber(newPageNumber)
+    console.log("next");
+    currentPage = parseInt(sessionStorage.getItem("currentPage"))+1;
+    updatePageNumber(currentPage);
 }
 
 function getProducts(pageNumber, searchTearms){
@@ -34,17 +32,17 @@ function getProducts(pageNumber, searchTearms){
         dataType: 'json',
         data: {maxResultsPerPage: 8, pageNumber: pageNumber, searchTearms: searchTearms},
         success:function(result){
-            console.log(result.products);
             displayProducts(result.products);
+            updatePagination(currentPage, result.numberOfPages);
         }
     });
+    return null;
 }
 
 function displayProducts(products){
     productContainer = document.getElementById('products'); // Get container to put data into
     productContainer.innerHTML = ""; // Clear container to remove old products
     for (i in products){
-        console.log(products[i]);
         // Construct card elements
         div =  card = document.createElement("div");
         card.setAttribute('class','col mt-2');
@@ -123,8 +121,7 @@ function displayProducts(products){
     }
 }
 
-function updatePagination(currentPage){
-    console.log("testing pagination")
+function updatePagination(currentPage, numberOfPages){
     paginationContainer = document.getElementById('pagination'); // Get container to put data into
     paginationContainer.innerHTML = ""; // Clear container to remove old pagination
     
@@ -132,14 +129,14 @@ function updatePagination(currentPage){
     paginationContainer.appendChild(prevDiv);
 
     prevFullBtn = document.createElement("a");
-    prevFullBtn.innerHTML = "&laquo; Previous"
+    prevFullBtn.innerHTML = "&lsaquo; Previous"
     prevFullBtn.setAttribute('onclick','prevPage()');
     
     prevSmallBtn = document.createElement("a");
-    prevSmallBtn.innerHTML = "&laquo;"
+    prevSmallBtn.innerHTML = "&lsaquo;"
     prevSmallBtn.setAttribute('onclick','prevPage()');
     
-    if (currentPage == 1){
+    if (currentPage <= 1){
         prevFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block disabled'); 
         prevSmallBtn.setAttribute('class','btn btn-outline-success d-block d-sm-none disabled');
     } else {
@@ -148,6 +145,25 @@ function updatePagination(currentPage){
     }
     prevDiv.appendChild(prevFullBtn);
     prevDiv.appendChild(prevSmallBtn);
+
+    nextDiv = document.createElement("div");
+    paginationContainer.appendChild(nextDiv);
+
+    nextFullBtn = document.createElement("a");
+    nextFullBtn.innerHTML = "Next &rsaquo;"
+    nextFullBtn.setAttribute('onclick','nextPage()');
     
+    nextSmallBtn = document.createElement("a");
+    nextSmallBtn.innerHTML = "&rsaquo;"
+    nextSmallBtn.setAttribute('onclick','nextPage()');
     
+    if (currentPage >= numberOfPages){
+        nextFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block disabled'); 
+        nextSmallBtn.setAttribute('class','btn btn-outline-success d-block d-sm-none disabled');
+    } else {
+        nextFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block'); 
+        nextSmallBtn.setAttribute('class','btn btn-outline-success d-block d-sm-none');
+    }
+    nextDiv.appendChild(nextFullBtn);
+    nextDiv.appendChild(nextSmallBtn);
 }
