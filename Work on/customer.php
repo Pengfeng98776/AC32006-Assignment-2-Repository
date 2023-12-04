@@ -13,7 +13,7 @@
   $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
   $products = [];
   if ($searchTerm) {
-      $stmt = $mysql->prepare("SELECT * FROM Product WHERE Name LIKE :searchTerm OR Description LIKE :searchTerm");
+      $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductName LIKE :searchTerm OR Description LIKE :searchTerm");
       $searchTerm = '%' . $searchTerm . '%';
       $stmt->bindParam(':searchTerm', $searchTerm);
       $stmt->execute();
@@ -75,7 +75,7 @@
                 <!-- Adds a hidden input field to store the product ID -->
                 <input type="hidden" name="idHidden" value="<?php echo $result['ProductID']; ?>">
                 <input type="submit" name="addToCart" class="btn btn-outline-success col-12" value="Add To Cart">
-                <?php 
+                <?php
                 if(isset($_POST['addToCart'])) {
                   addToCart($_POST['idHidden']);
                 }
@@ -116,7 +116,7 @@
             // Generate
             // while ($cartArray != NULL) {
               $cIndex = 0;
-            foreach ($_SESSION["cartArray"] as $itemID) { 
+            foreach ($_SESSION["cartArray"] as $itemID) {
               $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductID = ?");
               $stmt->execute([$itemID]);
               $productDetails = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -129,23 +129,23 @@
               <!-- no idea what but i need to divide this number by 9 or it doesnt work -->
               <p><?php echo (htmlspecialchars($_SESSION['quantityArray'][$cIndex]))/9; ?></p>
               <p>£<?php echo htmlspecialchars($productDetails['PurchaseCost']); ?></p>
-              
+
             </div>
-            <?php 
+            <?php
             $cIndex += 1;
             } ?>
-        </div>      
+        </div>
 
         <form method="post">
           <input type="submit" name="clearCart" value="Clear Cart">
-          <?php 
+          <?php
           ?>
         </form>
       </div>
     </div>
   </section>
 
-  
+
   <script src="https://kit.fontawesome.com/b121f70603.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

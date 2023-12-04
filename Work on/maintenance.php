@@ -52,7 +52,7 @@
       $userID = $_POST['removeUserID'];
 
       // checks if the user is not a protected user before trying to delete
-      $protectedUsers = ['managerUser1', 'staffUser1', 'maintenanceUser1'];
+      $protectedUsers = ['manager', 'staff', 'maintenance'];
       $stmt = $mysql->prepare("SELECT username FROM UserAccount WHERE user_id = :userID");
       $stmt->execute([':userID' => $userID]);
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -118,7 +118,7 @@
                   <select class="form-select" id="removeUserID" name="removeUserID">
                     <?php
                     // select all users from userAccount table, EXCEPT the ones i considered protected (listed by username and role on the page)
-                    $stmt = $mysql->query("SELECT user_id, username, usertype FROM UserAccount WHERE username NOT IN ('managerUser1', 'staffUser1', 'maintenanceUser1')");
+                    $stmt = $mysql->query("SELECT user_id, username, usertype FROM UserAccount WHERE username NOT IN ('manager', 'staff', 'maintenance')");
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo "<option value=\"" . $row['user_id'] . "\">" . $row['username'] . " (" . $row['usertype'] . ")</option>";
                     }
