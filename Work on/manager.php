@@ -54,7 +54,6 @@
             <h3><i class="fa-solid fa-cart-shopping"></i>Add new product:</h3>
             <div class="row">
               <div class="col">
-
               </div>
             </div>
             <hr class="hr hr-blurry mt-2" />
@@ -113,5 +112,4 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"></script>
 </body>
-
 </html>

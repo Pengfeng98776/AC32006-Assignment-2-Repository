@@ -2,13 +2,13 @@
 include 'includes/db.php';
 include 'includes/navbar.php';
 
-/*
-// Temporary script to insert initial user logins
+
+// temp script to insert initial user logins
 function insertInitialUsers($mysql) {
     $users = [
-        ['username' => 'managerUser1', 'password' => 'managerPass1', 'usertype' => 'Manager View'],
-        ['username' => 'staffUser1', 'password' => 'staffPass1', 'usertype' => 'Staff View'],
-        ['username' => 'maintenanceUser1', 'password' => 'maintenancePass1', 'usertype' => 'Maintenance View'],
+        ['username' => 'manager', 'password' => 'password', 'usertype' => 'Manager View'],
+        ['username' => 'staff', 'password' => 'password', 'usertype' => 'Staff View'],
+        ['username' => 'maintenance', 'password' => 'password', 'usertype' => 'Maintenance View'],
     ];
 
     foreach ($users as $user) {
@@ -21,7 +21,10 @@ function insertInitialUsers($mysql) {
         ]);
     }
 }
-*/
+
+
+
+insertInitialUsers($mysql);
 
 $errorMessage = "";
 

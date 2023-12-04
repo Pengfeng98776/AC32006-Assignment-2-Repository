@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
   <!-- include head for page -->
   <?php include 'includes/head.php';?>
-</head>
 <body>
   <?php
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
   include 'includes/db.php';
   include 'includes/navbar.php';
 
   $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
   $products = [];
-
   if ($searchTerm) {
-      $stmt = $mysql->prepare("SELECT * FROM Product WHERE Name LIKE :searchTerm OR Description LIKE :searchTerm");
+      $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductName LIKE :searchTerm OR Description LIKE :searchTerm");
       $searchTerm = '%' . $searchTerm . '%';
       $stmt->bindParam(':searchTerm', $searchTerm);
       $stmt->execute();
@@ -23,12 +23,33 @@
       $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  $cartArray = array();
 
-  function addToCart($ID, $cart) {
-      if (!in_array($ID, $cart)) {
-          array_push($cart, $ID);
-      }
+  if (!isset($_SESSION["cartArray"])) {
+    $_SESSION["cartArray"] = array();
+  }
+
+  if (!isset($_SESSION["quantityArray"])) {
+    $_SESSION["quantityArray"] = array();
+  }
+
+  // Fetch all products from the database
+  $stmt = $mysql->query("SELECT * FROM Product");
+  $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  function addToCart($ID) {
+    if (!in_array($ID, $_SESSION["cartArray"])) {
+      array_push($_SESSION["cartArray"], $ID);
+      array_push($_SESSION["quantityArray"], '1');
+    } else if (in_array($ID, $_SESSION["cartArray"])) {
+      $qtIndex = array_search($ID,$_SESSION["cartArray"]);
+      $_SESSION['quantityArray'][$qtIndex] += 1;
+    }
+  }
+
+  function clearCart() {
+    $_SESSION["cartArray"] = array();
+    $_SESSION["quantityArray"] = array();
+    $_SESSION["subtotal"] = 0;
   }
   ?>
 
@@ -38,11 +59,12 @@
       <?php foreach ($products as $result): ?>
         <div class="col mb-2">
           <div class="card h-100">
+            <!-- because we haven't sorted the images being stored in the db so just using the placeholder :) -->
             <img class="card-img-top" src="images/product placeholders/bike-image-1.jpg" alt="A placeholder image">
             <div class="card-body">
               <div class="row">
                 <div class="col-8">
-                  <h5 class="card-title"><?php echo htmlspecialchars($result['Name']); ?></h5>
+                  <h5 class="card-title"><?php echo htmlspecialchars($result['ProductName']); ?></h5> <!-- htmlspecialchars to protect against cross site scripting smile -->
                 </div>
                 <div class="col-4">
                   <h5 class="card-title">£<?php echo htmlspecialchars($result['PurchaseCost']); ?></h5>
@@ -50,10 +72,16 @@
               </div>
               <p class="card-text crop-text-2"><?php echo htmlspecialchars($result['Description']); ?></p>
               <form method="post">
+                <!-- Adds a hidden input field to store the product ID -->
+                <input type="hidden" name="idHidden" value="<?php echo $result['ProductID']; ?>">
                 <input type="submit" name="addToCart" class="btn btn-outline-success col-12" value="Add To Cart">
                 <?php
-                if(array_key_exists('addToCart', $_POST)) {
-                    addToCart($result['ProductID'], $cartArray);
+                if(isset($_POST['addToCart'])) {
+                  addToCart($_POST['idHidden']);
+                }
+
+                if(isset($_POST['clearCart'])) {
+                  clearCart();
                 }
                 ?>
               </form>
@@ -67,7 +95,7 @@
         <div class="row text-center mt-2">
           <div class="col">
             <h3><i class="fa-solid fa-cart-shopping"></i> Shopping cart</h3>
-            <h4 id="Subtotal">Subtotal: £4.99</h4>
+            <h4 id="Subtotal">Subtotal: £<?php echo $_SESSION['subtotal']  ?></h4>
             <div class="row">
               <div class="col">
                 <a href="#" class="btn btn-outline-success col-12" >Check-out</a>
@@ -86,24 +114,39 @@
 
         <?php
             // Generate
-            foreach ($cartArray as $itemID) { ?>
+            // while ($cartArray != NULL) {
+              $cIndex = 0;
+            foreach ($_SESSION["cartArray"] as $itemID) {
+              $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductID = ?");
+              $stmt->execute([$itemID]);
+              $productDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+
+              $_SESSION['subtotal'] = $_SESSION['subtotal'] + $productDetails['PurchaseCost']
+              ?>
         <div id="cart contents"> <!-- Generated rows for contents would go here -->
             <div class="d-flex justify-content-between" id="cartBox">
-              <p><?php echo $itemID; ?></p>
-              <p class>1</p>
-              <p class>£4.99</p>
-              <a href="#!" style="color: white;"><i class="fa-solid fa-trash"></i></a>
+              <p><?php echo htmlspecialchars($productDetails['ProductName']); ?></p>
+              <!-- no idea what but i need to divide this number by 9 or it doesnt work -->
+              <p><?php echo (htmlspecialchars($_SESSION['quantityArray'][$cIndex]))/9; ?></p>
+              <p>£<?php echo htmlspecialchars($productDetails['PurchaseCost']); ?></p>
+
             </div>
             <?php
+            $cIndex += 1;
             } ?>
         </div>
 
+        <form method="post">
+          <input type="submit" name="clearCart" value="Clear Cart">
+          <?php
+          ?>
+        </form>
       </div>
     </div>
   </section>
 
 
-
+  <script src="https://kit.fontawesome.com/b121f70603.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
