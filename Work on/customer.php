@@ -23,8 +23,13 @@
       $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
+
   if (!isset($_SESSION["cartArray"])) {
     $_SESSION["cartArray"] = array();
+  }
+
+  if (!isset($_SESSION["quantityArray"])) {
+    $_SESSION["quantityArray"] = array();
   }
 
   // Fetch all products from the database
@@ -34,11 +39,17 @@
   function addToCart($ID) {
     if (!in_array($ID, $_SESSION["cartArray"])) {
       array_push($_SESSION["cartArray"], $ID);
+      array_push($_SESSION["quantityArray"], '1');
+    } else if (in_array($ID, $_SESSION["cartArray"])) {
+      $qtIndex = array_search($ID,$_SESSION["cartArray"]);
+      $_SESSION['quantityArray'][$qtIndex] += 1;
     }
   }
 
   function clearCart() {
     $_SESSION["cartArray"] = array();
+    $_SESSION["quantityArray"] = array();
+    $_SESSION["subtotal"] = 0;
   }
   ?>
 
@@ -53,7 +64,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-8">
-                  <h5 class="card-title"><?php echo htmlspecialchars($result['Name']); ?></h5> <!-- htmlspecialchars to protect against cross site scripting smile -->
+                  <h5 class="card-title"><?php echo htmlspecialchars($result['ProductName']); ?></h5> <!-- htmlspecialchars to protect against cross site scripting smile -->
                 </div>
                 <div class="col-4">
                   <h5 class="card-title">£<?php echo htmlspecialchars($result['PurchaseCost']); ?></h5>
@@ -84,7 +95,7 @@
         <div class="row text-center mt-2">
           <div class="col">
             <h3><i class="fa-solid fa-cart-shopping"></i> Shopping cart</h3>
-            <h4 id="Subtotal">Subtotal: £4.99</h4>
+            <h4 id="Subtotal">Subtotal: £<?php echo $_SESSION['subtotal']  ?></h4>
             <div class="row">
               <div class="col">
                 <a href="#" class="btn btn-outline-success col-12" >Check-out</a>
@@ -104,19 +115,24 @@
         <?php
             // Generate
             // while ($cartArray != NULL) {
+              $cIndex = 0;
             foreach ($_SESSION["cartArray"] as $itemID) { 
               $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductID = ?");
               $stmt->execute([$itemID]);
               $productDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+
+              $_SESSION['subtotal'] = $_SESSION['subtotal'] + $productDetails['PurchaseCost']
               ?>
         <div id="cart contents"> <!-- Generated rows for contents would go here -->
             <div class="d-flex justify-content-between" id="cartBox">
-              <p><?php echo htmlspecialchars($productDetails['Name']); ?></p>
-              <p><?php echo '1'; ?></p>
+              <p><?php echo htmlspecialchars($productDetails['ProductName']); ?></p>
+              <!-- no idea what but i need to divide this number by 9 or it doesnt work -->
+              <p><?php echo (htmlspecialchars($_SESSION['quantityArray'][$cIndex]))/9; ?></p>
               <p>£<?php echo htmlspecialchars($productDetails['PurchaseCost']); ?></p>
               
             </div>
             <?php 
+            $cIndex += 1;
             } ?>
         </div>      
 
