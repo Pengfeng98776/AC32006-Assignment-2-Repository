@@ -18,6 +18,15 @@ function updatePageNumber(newPageNumber){
     updatePageContents(null);
 }
 
+function prevPage(){
+    currentPage = parseInt(sessionStorage.getItem("currentPage"))-1;
+    updatePageNumber(currentPage);
+}
+function nextPage(){
+    currentPage = parseInt(sessionStorage.getItem("currentPage"))+1;
+    updatePageNumber(currentPage);
+}
+
 function getProducts(pageNumber, searchTearms){
     $.ajax({
         url:"includes/productPageNav.php",    //the page containing php script
