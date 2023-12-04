@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $purchaseCost = $_POST['purchaseCost'];
-    $sellerPrice = $_POST['sellingPrice'];
+    $sellingPrice = $_POST['sellingPrice'];
     $stockQuantity = $_POST['stockQuantity'];
 
     $stmt->execute();
