@@ -47,14 +47,16 @@ function displayProducts(products){
     productContainer = document.getElementById('products'); // Get container to put data into
     productContainer.innerHTML = ""; // Clear container to remove old products
     for (i in products){
+        console.log(products[i]);
         // Construct card elements
         div =  card = document.createElement("div");
-        card.setAttribute('class','col mt-2');
+        card.setAttribute('class','col mt-2 px-1');
 
         card = document.createElement("div");
         card.setAttribute('class','card bg-dark text-white');
         div.appendChild(card);
 
+        imageContainer = document.createElement("div");
         image = document.createElement("img");
         image.setAttribute('class','card-img-top');
         if (products[i].image){
@@ -63,11 +65,14 @@ function displayProducts(products){
             image.src = "images/product placeholders/product placeholder.jpg";
             image.alt = "no image for this product exists";
         }
+        imageContainer.appendChild(image);
+        imageContainer.setAttribute("class", "card");
+        stock = 0; // hardcoded for testing       
         
-        card.appendChild(image);
+        card.appendChild(imageContainer);
 
         cardBody = document.createElement("div");
-        cardBody.setAttribute('class','card-body');
+        cardBody.setAttribute('class','card-body rounded');
         card.appendChild(cardBody); // Nests card within the mainDiv
 
         // Top row elements (price)
@@ -99,7 +104,7 @@ function displayProducts(products){
 
         productDescription = document.createElement("p");
         productDescription.setAttribute('class','card-text crop-text-2');
-        productDescription.innerHTML = products[i].ProductCategory;
+        productDescription.innerHTML = products[i].Description;
         midRow.appendChild(productDescription);
 
         bottomRow = document.createElement("div");
@@ -122,6 +127,20 @@ function displayProducts(products){
         buttonGroup.appendChild(RightButton);
 
         productContainer.appendChild(div)
+        if (stock == 0){ // should be something like: products.Quantity
+            image.setAttribute("style", "filter: blur(1px) brightness(60%);") // wanted to use a class with these styles and set that but it wasn't working :p
+
+            imageOverlay = document.createElement("div");
+            imageOverlay.setAttribute("class", "card-img-overlay d-flex align-items-center justify-content-center");
+
+            outOfStockMsg = document.createElement("h4");
+            outOfStockMsg.innerHTML = "Out of stock";
+            outOfStockMsg.setAttribute("class", "text-center")
+            imageOverlay.appendChild(outOfStockMsg);
+            imageContainer.appendChild(imageOverlay);
+            leftButton.setAttribute("class", "btn btn-outline-primary col-6 disabled");
+            RightButton.setAttribute("class", "btn btn-outline-warning col-6 disabled");
+        } 
     }
 }
 

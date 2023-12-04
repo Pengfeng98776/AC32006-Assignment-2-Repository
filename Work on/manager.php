@@ -29,14 +29,14 @@
 
         <!-- Bottom Row: pagination for product pages -->
         <div class="row">
-          <div class="col-12 d-flex justify-content-between align-items-center my-1" id="pagination">
+          <div class="col-12 d-flex justify-content-between align-items-center my-1 px-1" id="pagination">
             <div>
               <a onclick="prevPage()" class="btn btn-outline-success d-none d-sm-block disabled" id="prevFullBtn">‹ Previous</a>
               <a onclick="prevPage()" class="btn btn-outline-success d-block d-sm-none disabled" id="prevSmallBtn">‹</a>
             </div>
             <div>
               <form onsubmit="paginationForm()" class="form-check">
-                  Page <input type="text" value="" size="1" id="formInput"> of <span id="pageCount"></span>
+                  Page <input type="text" value="" size="1" id="formInput" class="rounded"> of <span id="pageCount"></span>
               </form>
             </div>
             <div>
