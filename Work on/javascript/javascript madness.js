@@ -1,10 +1,10 @@
-function updatePageContents(searchTearms){
+function updatePageContents(searchTerms){
     if (!sessionStorage.getItem("currentPage")){
         currentPage = sessionStorage.setItem("currentPage", 1);
     } else {
         currentPage = sessionStorage.getItem("currentPage");
     }
-    getProducts(currentPage, searchTearms);
+    getProducts(currentPage, searchTerms);
 }
 
 function updatePageNumber(newPageNumber){
@@ -28,12 +28,12 @@ function nextPage(){
     updatePageNumber(currentPage);
 }
 
-function getProducts(pageNumber, searchTearms){
+function getProducts(pageNumber, searchTerms){
     $.ajax({
         url:"includes/productPageNav.php",    //the page containing php script
         type: "post",    //request type,
         dataType: 'json',
-        data: {maxResultsPerPage: 8, pageNumber: pageNumber, searchTearms: searchTearms},
+        data: {maxResultsPerPage: 8, pageNumber: pageNumber, searchTerms: searchTerms},
         success:function(result){
             displayProducts(result.products);
             updatePagination(currentPage, result.numberOfPages);
