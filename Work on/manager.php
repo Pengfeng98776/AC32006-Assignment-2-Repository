@@ -15,13 +15,10 @@
 
       <!-- Top row -->
         <div class="row mt-2">
-          <div class="col-6 align-items-center">
+          <div class="align-items-center">
             <h5>
               Products we have
             </h5>
-          </div>
-          <div class="col-6 d-flex justify-content-end align-items-center">
-            <p>temp</p>
           </div>
         </div>
 
@@ -33,7 +30,19 @@
         <!-- Bottom Row: pagination for product pages -->
         <div class="row">
           <div class="col-12 d-flex justify-content-between align-items-center my-1" id="pagination">
-              <!-- Content is generated javascript pagination() method-->
+            <div>
+              <a onclick="prevPage()" class="btn btn-outline-success d-none d-sm-block disabled" id="prevFullBtn">‹ Previous</a>
+              <a onclick="prevPage()" class="btn btn-outline-success d-block d-sm-none disabled" id="prevSmallBtn">‹</a>
+            </div>
+            <div>
+              <form onsubmit="paginationForm()" class="form-check">
+                  Page <input type="text" value="" size="1" id="formInput"> of <span id="pageCount"></span>
+              </form>
+            </div>
+            <div>
+              <a onclick="nextPage()" class="btn btn-outline-success d-none d-sm-block" id="nextFullBtn">Next ›</a>
+              <a onclick="nextPage()" class="btn btn-outline-success d-block d-sm-none" id="nextSmallBtn">›</a>
+            </div>
           </div>
         </div>
       </div>

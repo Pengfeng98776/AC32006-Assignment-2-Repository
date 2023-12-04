@@ -78,3 +78,7 @@ body{
   -webkit-box-orient: vertical;
   height: 45px;
 }
+
+#pageCount, #formInput {
+  display: inline-block;
+}

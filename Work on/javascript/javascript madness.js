@@ -5,22 +5,25 @@ function updatePageContents(searchTearms){
         currentPage = sessionStorage.getItem("currentPage");
     }
     getProducts(currentPage, searchTearms);
-    console.log(currentPage)
 }
 
 function updatePageNumber(newPageNumber){
+    numberOfPages = sessionStorage.getItem("numberOfPages");
+    if (newPageNumber > numberOfPages){
+        newPageNumber = numberOfPages;
+    } else if (newPageNumber < 1){
+        newPageNumber = 1;
+    }
     sessionStorage.setItem("currentPage", newPageNumber);
     updatePageContents(null);
 }
 
 function prevPage(){
-    console.log("prev");
     currentPage = parseInt(sessionStorage.getItem("currentPage"))-1;
     updatePageNumber(currentPage);
 }
 
 function nextPage(){
-    console.log("next");
     currentPage = parseInt(sessionStorage.getItem("currentPage"))+1;
     updatePageNumber(currentPage);
 }
@@ -34,6 +37,7 @@ function getProducts(pageNumber, searchTearms){
         success:function(result){
             displayProducts(result.products);
             updatePagination(currentPage, result.numberOfPages);
+            sessionStorage.setItem("numberOfPages", result.numberOfPages);
         }
     });
     return null;
@@ -122,19 +126,12 @@ function displayProducts(products){
 }
 
 function updatePagination(currentPage, numberOfPages){
-    paginationContainer = document.getElementById('pagination'); // Get container to put data into
-    paginationContainer.innerHTML = ""; // Clear container to remove old pagination
-    
-    prevDiv = document.createElement("div");
-    paginationContainer.appendChild(prevDiv);
-
-    prevFullBtn = document.createElement("a");
-    prevFullBtn.innerHTML = "&lsaquo; Previous"
-    prevFullBtn.setAttribute('onclick','prevPage()');
-    
-    prevSmallBtn = document.createElement("a");
-    prevSmallBtn.innerHTML = "&lsaquo;"
-    prevSmallBtn.setAttribute('onclick','prevPage()');
+    prevFullBtn = document.getElementById('prevFullBtn'); 
+    prevSmallBtn = document.getElementById('prevSmallBtn'); 
+    nextFullBtn = document.getElementById('nextFullBtn'); 
+    nextSmallBtn = document.getElementById('nextSmallBtn');
+    formInput = document.getElementById('formInput'); 
+    pageCount = document.getElementById('pageCount');
     
     if (currentPage <= 1){
         prevFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block disabled'); 
@@ -143,19 +140,6 @@ function updatePagination(currentPage, numberOfPages){
         prevFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block'); 
         prevSmallBtn.setAttribute('class','btn btn-outline-success d-block d-sm-none');
     }
-    prevDiv.appendChild(prevFullBtn);
-    prevDiv.appendChild(prevSmallBtn);
-
-    nextDiv = document.createElement("div");
-    paginationContainer.appendChild(nextDiv);
-
-    nextFullBtn = document.createElement("a");
-    nextFullBtn.innerHTML = "Next &rsaquo;"
-    nextFullBtn.setAttribute('onclick','nextPage()');
-    
-    nextSmallBtn = document.createElement("a");
-    nextSmallBtn.innerHTML = "&rsaquo;"
-    nextSmallBtn.setAttribute('onclick','nextPage()');
     
     if (currentPage >= numberOfPages){
         nextFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block disabled'); 
@@ -164,6 +148,11 @@ function updatePagination(currentPage, numberOfPages){
         nextFullBtn.setAttribute('class','btn btn-outline-success d-none d-sm-block'); 
         nextSmallBtn.setAttribute('class','btn btn-outline-success d-block d-sm-none');
     }
-    nextDiv.appendChild(nextFullBtn);
-    nextDiv.appendChild(nextSmallBtn);
+    formInput.setAttribute('value', currentPage)
+    pageCount.innerHTML = numberOfPages;
+}
+
+function paginationForm() {
+    formInput = document.getElementById('formInput').value;
+    updatePageNumber(formInput);
 }
