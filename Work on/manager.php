@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <!-- include head for page -->
-<?php include 'includes/head.php';?>
-<body onload="updatePageContents(null)"> <!-- this doesnt work unless here idk why leave me alone. -->
+<?php include 'includes/head.php';
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+?>
+<body onload="updatePageContents('<?php echo $searchTerm; ?>')"> <!-- this doesnt work unless here idk why leave me alone. -->
   <?php
   include 'includes/db.php';
   include 'includes/navbar.php';
@@ -36,7 +38,7 @@
             </div>
             <div>
               <form onsubmit="paginationForm()" class="form-check">
-                  Page <input type="text" value="" size="1" id="formInput" class="rounded"> of <span id="pageCount"></span>
+                  Page <input type="text" placeholder="0" size="1" id="formInput" class="rounded"> of <span id="pageCount">0</span>
               </form>
             </div>
             <div>

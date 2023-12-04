@@ -34,6 +34,7 @@ function getProducts(pageNumber, searchTearms){
         dataType: 'json',
         data: {maxResultsPerPage: 8, pageNumber: pageNumber, searchTearms: searchTearms},
         success:function(result){
+            console.log(result.products);
             displayProducts(result.products);
             updatePagination(currentPage, result.numberOfPages);
             sessionStorage.setItem("numberOfPages", result.numberOfPages);
@@ -41,6 +42,7 @@ function getProducts(pageNumber, searchTearms){
     });
     return null;
 }
+
 function displayProducts(products){
     productContainer = document.getElementById('products'); // Get container to put data into
     productContainer.innerHTML = ""; // Clear container to remove old products
@@ -124,6 +126,7 @@ function displayProducts(products){
         } 
     }
 }
+
 function updatePagination(currentPage, numberOfPages){
     prevFullBtn = document.getElementById('prevFullBtn'); 
     prevSmallBtn = document.getElementById('prevSmallBtn'); 
