@@ -7,6 +7,21 @@
   include 'includes/db.php';
   include 'includes/navbar.php';
   include 'includes/productPageNav.php';
+
+  $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+  $products = [];
+  if ($searchTerm) {
+    $searchTerm = '%' . $searchTerm . '%';
+    $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductName LIKE :searchTerm OR Description LIKE :searchTerm");
+    $stmt->bindParam(':searchTerm', $searchTerm);
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  } else {
+    $stmt = $mysql->query("SELECT * FROM Product");
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+  ?>
+
   ?>
     <div class="container-fluid">
       <div class="row">
@@ -19,47 +34,43 @@
             </div>
             <div class="col-6 d-flex justify-content-end align-items-center">
               <form action="<?php echo "{$_SERVER['PHP_SELF']}";?>" class="form-check">
-                  Page <input type="text" value="<?php echo $currentPage;?>" size="1"> of <?php echo $numOfPages;?>
+                  <input type="text" value="<?php echo $currentPage;?>" size="1"> of <?php echo $numOfPages;?>
               </form>
             </div>
           </div>
           <div id="products" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-            <?php
-            // Generate Cards
-            while ($result != NULL) { ?>
+            <?php foreach ($products as $result): ?>
               <div class="col mt-2">
                 <div class="card bg-dark text-white">
                   <img class="card-img-top" src="images/product placeholders/product placeholder.jpg" alt="A placeholder image">
                   <div class="card-body">
                     <div class="row">
                       <div class="col-8">
-                        <h5 class="card-title"><?php echo $result['ProductID'], ': ', $result['Name'] ?></h5>
+                        <h5 class="card-title"><?php echo $result['ProductID'] . ': ' . $result['ProductName']; ?></h5>
                       </div>
                       <div class="col-4">
-                        <h5 class="card-title">£<?php echo $result['PurchaseCost'] ?></h5>
+                        <h5 class="card-title">£<?php echo $result['PurchaseCost']; ?></h5>
                       </div>
                     </div>
-                    <p class="card-text crop-text-2"><?php echo $result['Description'] ?></p>
+                    <p class="card-text crop-text-2"><?php echo $result['Description']; ?></p>
                     <div class="row">
                       <div class="btn-group" data-toggle="buttons">
-                        <a href="#" class="btn btn-outline-primary col-6" >Generate report</a>
-                        <a href="#" class="btn btn-outline-warning col-6" >Mark as in-stock</a>
+                        <a href="#" class="btn btn-outline-primary col-6">Generate report</a>
+                        <a href="#" class="btn btn-outline-warning col-6">Mark as in-stock</a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <?php 
-            $result = $stmt->fetch();
-            } ?>
+            <?php endforeach; ?>
           </div>
-          
+
           <!-- navigation for prouct pages -->
           <div class="row">
             <div class="col-12 d-flex justify-content-between align-items-center my-1">
                 <a href="<?php echo "{$_SERVER['PHP_SELF']}?currentPage="; echo $currentPage-1;?>" class="btn btn-outline-success <?php if ($currentPage==0) {echo "disabled";}?>"><span class = "d-none d-sm-block">Previous</span> <span class = "d-block d-sm-none">&laquo;</span></a>
                 <div class="d-flex justify-content-center">
-                    <?php 
+                    <?php
                     $printedCurrent = False;
                     $numOfPages = 20;
                     $numOfButtons=9;
@@ -72,11 +83,11 @@
                       } else if ($numOfPages>$numOfPages-$currentPage+$i) {
                         echo "<a href=\"{$_SERVER['PHP_SELF']}?currentPage=", $numOfPages-($numOfButtons-$i) ,"\" class=\"me-1 btn btn-outline-success\">", $numOfPages-($numOfButtons-$i), "</a>";
                       }
-                    } 
+                    }
                     ?>
                 </div>
                 <a href="<?php echo "{$_SERVER['PHP_SELF']}?currentPage="; echo $currentPage+1;?>" class="btn btn-outline-success <?php if ($currentPage==$numOfPages) {echo "disabled";}?>"><span class = "d-none d-sm-block">Next Page</span> <span class = "d-block d-sm-none">&raquo;</span></a>
-              </div>            
+              </div>
             </div>
           </div>
 
@@ -86,7 +97,7 @@
               <h3><i class="fa-solid fa-cart-shopping"></i>Add new product:</h3>
               <div class="row">
                 <div class="col">
-                  
+
                 </div>
               </div>
               <hr class="hr hr-blurry mt-2"/>
@@ -101,7 +112,7 @@
                   <input type="text" class="form-control" name="name" placeholder="Name">
                 </div>
                 <p></p> <!-- spacing smile -->
-                
+
                 <div class="form-group">
                   <label for="exampleFormControlTextarea1">Product Description:</label>
                   <textarea class="form-control" name="description" rows="3"></textarea>
