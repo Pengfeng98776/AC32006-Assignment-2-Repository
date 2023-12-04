@@ -7,7 +7,7 @@
   include 'includes/db.php';
   include 'includes/navbar.php';
   $stmt = $mysql->query("SELECT * FROM Product ORDER BY RAND() LIMIT 3");
-  $products = $stmt->fetchAll(PDO::FETCH_ASSOC); // an attempt at stopping duplicate randoms lmao
+  $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   ?>
 
   <section class="cover">
@@ -28,7 +28,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-8">
-                  <h5 class="card-title"><?php echo $result['Name']; ?></h5>
+                  <h5 class="card-title"><?php echo $result['ProductName']; ?></h5>
                 </div>
                 <div class="col-4">
                   <h5 class="card-title">£<?php echo $result['PurchaseCost']; ?></h5>

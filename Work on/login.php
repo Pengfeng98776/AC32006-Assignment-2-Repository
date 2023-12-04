@@ -3,7 +3,7 @@ include 'includes/db.php';
 include 'includes/navbar.php';
 
 /*
-// Temporary script to insert initial user logins
+// temp script to insert initial user logins
 function insertInitialUsers($mysql) {
     $users = [
         ['username' => 'managerUser1', 'password' => 'managerPass1', 'usertype' => 'Manager View'],
@@ -22,6 +22,8 @@ function insertInitialUsers($mysql) {
     }
 }
 */
+
+// insertInitialUsers($mysql);
 
 $errorMessage = "";
 
