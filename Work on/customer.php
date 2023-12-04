@@ -10,46 +10,67 @@
   include 'includes/db.php';
   include 'includes/navbar.php';
 
+  // Initialize cart and subtotal if not set
+  if (!isset($_SESSION["cartArray"])) {
+    $_SESSION["cartArray"] = array();
+  }
+  if (!isset($_SESSION["quantityArray"])) {
+    $_SESSION["quantityArray"] = array();
+  }
+  if (!isset($_SESSION["subtotal"])) {
+    $_SESSION["subtotal"] = 0;
+  }
+
+  // function to add to cart
+  function addToCart($ID, $cost) {
+    if (!in_array($ID, $_SESSION["cartArray"])) {
+      $_SESSION["cartArray"][] = $ID;
+      $_SESSION["quantityArray"][] = 1;
+      $_SESSION["subtotal"] += $cost;
+    } else {
+      $index = array_search($ID, $_SESSION["cartArray"]);
+      $_SESSION["quantityArray"][$index]++;
+      $_SESSION["subtotal"] += $cost;
+    }
+  }
+
+  // function to clear the cart
+  function clearCart() {
+    $_SESSION["cartArray"] = array();
+    $_SESSION["quantityArray"] = array();
+    $_SESSION["subtotal"] = 0;
+  }
+
+  // check if add to cart was clicked
+  if (isset($_POST['addToCart'])) {
+    $productID = $_POST['idHidden'];
+    $productCost = $_POST['costHidden'];
+    addToCart($productID, $productCost);
+    // Use POST/REDIRECT/GET pattern to avoid form resubmission
+    header("Location: customer.php");
+    exit;
+  }
+
+  // check if clear cart was clicked
+  if (isset($_POST['clearCart'])) {
+    clearCart();
+    // Use POST/REDIRECT/GET pattern to avoid form resubmission
+    header("Location: customer.php");
+    exit;
+  }
+
+  // search functionality
   $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
   $products = [];
   if ($searchTerm) {
-      $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductName LIKE :searchTerm OR Description LIKE :searchTerm");
       $searchTerm = '%' . $searchTerm . '%';
+      $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductName LIKE :searchTerm OR Description LIKE :searchTerm");
       $stmt->bindParam(':searchTerm', $searchTerm);
       $stmt->execute();
       $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   } else {
       $stmt = $mysql->query("SELECT * FROM Product");
       $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  }
-
-
-  if (!isset($_SESSION["cartArray"])) {
-    $_SESSION["cartArray"] = array();
-  }
-
-  if (!isset($_SESSION["quantityArray"])) {
-    $_SESSION["quantityArray"] = array();
-  }
-
-  // Fetch all products from the database
-  $stmt = $mysql->query("SELECT * FROM Product");
-  $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-  function addToCart($ID) {
-    if (!in_array($ID, $_SESSION["cartArray"])) {
-      array_push($_SESSION["cartArray"], $ID);
-      array_push($_SESSION["quantityArray"], '1');
-    } else if (in_array($ID, $_SESSION["cartArray"])) {
-      $qtIndex = array_search($ID,$_SESSION["cartArray"]);
-      $_SESSION['quantityArray'][$qtIndex] += 1;
-    }
-  }
-
-  function clearCart() {
-    $_SESSION["cartArray"] = array();
-    $_SESSION["quantityArray"] = array();
-    $_SESSION["subtotal"] = 0;
   }
   ?>
 

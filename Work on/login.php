@@ -3,6 +3,8 @@ include 'includes/db.php';
 include 'includes/navbar.php';
 
 
+/*
+
 // temp script to insert initial user logins
 function insertInitialUsers($mysql) {
     $users = [
@@ -22,9 +24,11 @@ function insertInitialUsers($mysql) {
     }
 }
 
-
+ONLY HERE FOR TESTING AND TO INIT THE CREDENTIALS, OBVIOUSLY THIS WOULD NOT COMMENTED OUT ON A REAL DEPLOYMENT!!!!!
 
 insertInitialUsers($mysql);
+
+*/
 
 $errorMessage = "";
 
