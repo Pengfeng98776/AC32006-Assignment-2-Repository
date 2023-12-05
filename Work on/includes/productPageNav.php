@@ -31,7 +31,7 @@ $numOfPages = ceil($numOfProducts[0] / $maxResultsPerPage);
 // Get results for current page
 $offset = ($pageNumber-1) * $maxResultsPerPage;
 if ($searchTearms){
-    $query2 = "SELECT * FROM Product WHERE ProductName LIKE '%".$searchTearms."%' OR Description LIKE '%".$searchTearms."%' LIMIT $maxResultsPerPage OFFSET $offset;";
+    $query2 = "SELECT ProductID, ProductName, CategoryID, PurchaseCost, SellingPrice, Description, Quantity, WarehouseID FROM Product WHERE ProductName LIKE '%".$searchTearms."%' OR Description LIKE '%".$searchTearms."%' LIMIT $maxResultsPerPage OFFSET $offset;";
 
 } else{
     $query2 = "SELECT ProductID, ProductName, CategoryID, PurchaseCost, SellingPrice, Description, Quantity, WarehouseID FROM Product LIMIT $maxResultsPerPage OFFSET $offset;\n";
