@@ -59,6 +59,34 @@
     header("Location: customer.php");
     exit;
   }
+
+  if (isset($_POST['checkout'])) {
+    // Create a new order in the OrderTable and get the OrderID
+    $mysql->beginTransaction();
+    $insertOrder = $mysql->prepare("INSERT INTO OrderTable (/* your order table columns */) VALUES (/* your values */)");
+    $insertOrder->execute();
+    $orderID = $mysql->lastInsertId();
+
+    // Insert each item in the cart as an OrderItem
+    for ($i = 0; $i < count($_SESSION["cartArray"]); $i++) {
+        $productID = $_SESSION["cartArray"][$i];
+        $quantity = $_SESSION["quantityArray"][$i];
+        $subtotal = $_SESSION["subtotal"];
+        
+        // Insert into OrderItem table
+        $insertOrderItem = $mysql->prepare("INSERT INTO OrderItem (Quantity, Subtotal, OrderID, ProductID) VALUES (?, ?, ?, ?)");
+        $insertOrderItem->execute([$quantity, $subtotal, $orderID, $productID]);
+    }
+
+    // Commit the transaction
+    $mysql->commit();
+
+    // Clear the cart after successful checkout
+    clearCart();
+    header("Location: customer.php");
+    exit;
+}
+
   // search functionality
   $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
   $products = [];
@@ -120,7 +148,9 @@
             <h4 id="Subtotal">Subtotal: £<?php echo $_SESSION['subtotal']  ?></h4>
             <div class="row">
               <div class="col">
-                <a href="#" class="btn btn-outline-success col-12" >Check-out</a>
+              <form method="post">
+                <input type="submit" name="checkout" value="Check-out" class="btn btn-outline-success col-12">
+              </form>
               </div>
             </div>
             <hr class="hr hr-blurry mt-2"/>
