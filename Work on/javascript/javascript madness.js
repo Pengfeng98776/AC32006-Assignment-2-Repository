@@ -1,4 +1,5 @@
 function updatePageContents(searchTearms){
+    console.log("in updatePageContents");
     if (!sessionStorage.getItem("currentPage")){
         currentPage = sessionStorage.setItem("currentPage", 1);
     } else {
@@ -28,13 +29,14 @@ function nextPage(){
 }
 
 function getProducts(pageNumber, searchTearms){
+    console.log("in get products");
     $.ajax({
         url:"includes/productPageNav.php",    //the page containing php script
         type: "post",    //request type,
         dataType: 'json',
         data: {maxResultsPerPage: 8, pageNumber: pageNumber, searchTearms: searchTearms},
         success:function(result){
-            console.log(result.products);
+            //console.log(result.products);
             displayProducts(result.products);
             updatePagination(currentPage, result.numberOfPages);
             sessionStorage.setItem("numberOfPages", result.numberOfPages);
@@ -47,18 +49,30 @@ function displayProducts(products){
     productContainer = document.getElementById('products'); // Get container to put data into
     productContainer.innerHTML = ""; // Clear container to remove old products
     for (i in products){
-        console.log(products[i]);
+        //console.log(products[i]);
         // Construct card elements
         div =  card = document.createElement("div");
         card.setAttribute('class','col mt-2 px-1');
+
         card = document.createElement("div");
         card.setAttribute('class','card bg-dark text-white');
         div.appendChild(card);
+
         imageContainer = document.createElement("div");
         image = document.createElement("img");
         image.setAttribute('class','card-img-top');
-        if (products[i].image){
-            image.src = products[i].image;
+
+        if (products[i].Image){
+            blob = products[i].Image;
+            console.log(blob);
+            if (blob) {
+                blobURL = URL.createObjectURL(blob);
+                image.src = blobURL;
+                console.log(blobURL)
+              } else {
+                console.error("Blob data is null or undefined.");
+              }
+            
         } else {
             image.src = "images/product placeholders/product placeholder.jpg";
             image.alt = "no image for this product exists";
@@ -68,61 +82,71 @@ function displayProducts(products){
         stock = 0; // hardcoded for testing       
         
         card.appendChild(imageContainer);
+
         cardBody = document.createElement("div");
         cardBody.setAttribute('class','card-body rounded');
         card.appendChild(cardBody); // Nests card within the mainDiv
+
         // Top row elements (price)
         topRow = document.createElement("div");
         topRow.setAttribute('class','row');
         cardBody.appendChild(topRow);
+
         topLeftCol = document.createElement("div");
         topLeftCol.setAttribute('class','col-8');
         topRow.appendChild(topLeftCol);
+
         productTitle = document.createElement("h5");
         productTitle.setAttribute('class','card-title');
         productTitle.innerHTML = products[i].ProductName;
         topLeftCol.appendChild(productTitle);
+
         topRightCol = document.createElement("div");
         topRightCol.setAttribute('class','col-4');
         topRow.appendChild(topRightCol);
-        productCost = document.createElement("h5");
-        productCost.setAttribute('class','card-title');
-        topRightCol.appendChild(productCost);
-        productCost.innerHTML = "£"+products[i].SellingPrice;
+
+        productID = document.createElement("h5");
+        productID.setAttribute('class','card-title');
+        topRightCol.appendChild(productID);
+        productID.innerHTML = "ID:"+products[i].ProductID;
+
         midRow = document.createElement("div");
         midRow.setAttribute('class','row mb-1');
         cardBody.appendChild(midRow);
+
         productDescription = document.createElement("p");
         productDescription.setAttribute('class','card-text crop-text-2');
         productDescription.innerHTML = products[i].Description;
         midRow.appendChild(productDescription);
+
         bottomRow = document.createElement("div");
         bottomRow.setAttribute('class','row');
         cardBody.appendChild(bottomRow);
+
         buttonGroup = document.createElement("div");
         buttonGroup.setAttribute('class','btn-group');
         buttonGroup.setAttribute('data-toggle','buttons');
         bottomRow.appendChild(buttonGroup);
+
         leftButton = document.createElement("a");
-        leftButton.setAttribute('class','btn btn-outline-primary col-6');
+        leftButton.setAttribute('class','btn btn-outline-success col-6');
         leftButton.innerHTML = "Generate report"
         buttonGroup.appendChild(leftButton);
-        RightButton = document.createElement("a");
-        RightButton.setAttribute('class','btn btn-outline-warning col-6');
-        RightButton.innerHTML = "Mark as in-stock"
-        buttonGroup.appendChild(RightButton);
+        
         productContainer.appendChild(div)
-        if (stock == 0){ // should be something like: products.Quantity
+
+        if (products[i].Quantity == 0){
             image.setAttribute("style", "filter: blur(1px) brightness(60%);") // wanted to use a class with these styles and set that but it wasn't working :p
             imageOverlay = document.createElement("div");
             imageOverlay.setAttribute("class", "card-img-overlay d-flex align-items-center justify-content-center");
+
             outOfStockMsg = document.createElement("h4");
             outOfStockMsg.innerHTML = "Out of stock";
             outOfStockMsg.setAttribute("class", "text-center")
+
             imageOverlay.appendChild(outOfStockMsg);
             imageContainer.appendChild(imageOverlay);
-            leftButton.setAttribute("class", "btn btn-outline-primary col-6 disabled");
-            RightButton.setAttribute("class", "btn btn-outline-warning col-6 disabled");
+            leftButton.setAttribute("class", "btn btn-outline-success col-6 disabled");
         } 
     }
 }

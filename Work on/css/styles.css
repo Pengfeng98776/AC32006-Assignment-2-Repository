@@ -69,7 +69,7 @@ body{
   color: #fff;
 }
 
-/* Ensure the text doesn't overflow */
+/* This has been taken from https://bootsnipp.com/snippets/ORE0l to allow multiple lines before truncating*/
 .crop-text-2 {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,4 +77,12 @@ body{
   -webkit-line-clamp: 2; /* Number of lines to show */
   -webkit-box-orient: vertical;
   height: 45px;
+}
+
+/* This has been taken from https://stackoverflow.com/questions/25859255/trying-to-make-bootstrap-modal-wider to allow for wider modal on large screens*/
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 90%;
+   max-width:1200px;
+  }
 }
