@@ -1,5 +1,5 @@
 <?php
-header('Location: /test/manager.php');
+header('Location: manager.php');
 include 'includes/db.php';
 
 if (isset($_POST['submitDel'])) {
