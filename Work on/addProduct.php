@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
     $stmt->bindParam(':PurchaseCost', $purchaseCost);
     $stmt->bindParam(':SellingPrice', $sellingPrice);
     $stmt->bindParam(':StockQuantity', $quantity);
-    $stmt->bindParam(':image', $imageData, PDO::PARAM_LOB); // Bind the binary data
+    $stmt->bindParam(':image', $imageData, PDO::PARAM_LOB);
     $stmt->bindParam(':catagoryID', $catagoryID);
     $stmt->bindParam(':warehouseID', $warehouseID);
 
