@@ -14,7 +14,7 @@
     <img src="images/stock-image-1.jpg" alt="bike" class="img-fluid">
     <div class="cover-caption">
       <h1>Welcome to Dundee Direct</h1>
-      <p>lorum ipsum</p>
+      <p>Straight from us to you!</p>
     </div>
   </section>
 
@@ -24,7 +24,7 @@
       <?php foreach ($products as $result): ?>
         <div class="col mt-2">
           <div class="card h-100">
-            <img class="card-img-top" src="images/product placeholders/bike-image-1.jpg" alt="A placeholder image">
+            <img class="card-img-top" src="/uploads/<?php echo htmlspecialchars($result['Image']); ?>" alt="Product Image">
             <div class="card-body">
               <div class="row">
                 <div class="col-8">

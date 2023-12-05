@@ -72,7 +72,7 @@
         $productID = $_SESSION["cartArray"][$i];
         $quantity = $_SESSION["quantityArray"][$i];
         $subtotal = $_SESSION["subtotal"];
-        
+
         // Insert into OrderItem table
         $insertOrderItem = $mysql->prepare("INSERT INTO OrderItem (Quantity, Subtotal, OrderID, ProductID) VALUES (?, ?, ?, ?)");
         $insertOrderItem->execute([$quantity, $subtotal, $orderID, $productID]);
@@ -109,7 +109,7 @@
         <div class="col mb-2">
           <div class="card h-100">
             <!-- because we haven't sorted the images being stored in the db so just using the placeholder :) -->
-            <img class="card-img-top" src="images/product placeholders/bike-image-1.jpg" alt="A placeholder image">
+            <img class="card-img-top" src="/uploads/<?php echo htmlspecialchars($result['Image']); ?>" alt="Product Image">
             <div class="card-body">
               <div class="row">
                 <div class="col-8">
@@ -124,7 +124,7 @@
                 <!-- Adds a hidden input field to store the product ID -->
                 <input type="hidden" name="idHidden" value="<?php echo $result['ProductID']; ?>">
                 <input type="submit" name="addToCart" onClick="document.location.href='test/customer.php'" class="btn btn-outline-success col-12" value="Add To Cart">
-                
+
               </form>
             </div>
           </div>
@@ -168,7 +168,7 @@
             // Generate
             // while ($cartArray != NULL) {
               $cIndex = 0;
-            foreach ($_SESSION["cartArray"] as $itemID) { 
+            foreach ($_SESSION["cartArray"] as $itemID) {
               $stmt = $mysql->prepare("SELECT * FROM Product WHERE ProductID = ?");
               $stmt->execute([$itemID]);
               $productDetails = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -178,23 +178,23 @@
               <p><?php echo htmlspecialchars($productDetails['ProductName']); ?></p>
               <p><?php echo (htmlspecialchars($_SESSION['quantityArray'][$cIndex])); ?></p>
               <p>£<?php echo htmlspecialchars($productDetails['PurchaseCost']); ?></p>
-              
+
             </div>
-            <?php 
+            <?php
             $cIndex += 1;
             } ?>
-        </div>      
+        </div>
 
         <form method="post">
           <input type="submit" name="clearCart" value="Clear Cart">
-          <?php 
+          <?php
           ?>
         </form>
       </div>
     </div>
   </section>
 
-  
+
   <script src="https://kit.fontawesome.com/b121f70603.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

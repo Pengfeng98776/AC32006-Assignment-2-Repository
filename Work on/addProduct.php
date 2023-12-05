@@ -11,7 +11,7 @@ if (isset($_POST['submit'])) {
     $warehouseID = $_POST['warehouseID'];
 
     // Image magic form w3schools: https://www.w3schools.com/php/php_file_upload.asp
-    $imagePath = $_FILES['imageToUpload']['tmp_name']; 
+    $imagePath = $_FILES['imageToUpload']['tmp_name'];
     $imageData = file_get_contents($imagePath);
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["imageToUpload"]["name"]);
