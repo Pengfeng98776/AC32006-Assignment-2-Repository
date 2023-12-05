@@ -70,7 +70,7 @@ function displayProducts(products){
                 image.src = blobURL;
                 console.log(blobURL)
               } else {
-                console.error("Blob data is null or undefined.");
+                console.error("blob bad :p");
               }
             
         } else {
