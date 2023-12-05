@@ -116,7 +116,11 @@ function displayProducts(products){
 
         productDescription = document.createElement("p");
         productDescription.setAttribute('class','card-text crop-text-2');
-        productDescription.innerHTML = products[i].Description;
+        if (products[i].Description != null){
+            productDescription.innerHTML = products[i].Description;
+        } else {
+            productDescription.innerHTML = "No description provided";
+        }
         midRow.appendChild(productDescription);
 
         bottomRow = document.createElement("div");
